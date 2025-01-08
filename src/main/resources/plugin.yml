@@ -1,0 +1,10 @@
+name: MineHuntPvPLobbyer
+version: '1.0'
+main: si.f5.stsaria.mineHuntPvPLobbyer.MineHuntPvPLobbyer
+api-version: '1.21'
+
+commands:
+  matching:
+    description: Start matching game
+    aliases: [m, matching]
+    usage: /matching
