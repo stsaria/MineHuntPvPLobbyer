@@ -10,8 +10,31 @@ public class MatchingCmdExec implements CommandExecutor {
         if (!(s instanceof Player)){
             return false;
         }
-        Player p = (Player)s;
-
+        Player player = (Player)s;
+        player.sendTitle("Matching....", null);
+        MatchingManager matchingManager = new MatchingManager(player);
+        int[] result = matchingManager.ifVacantAdd();
+        int port = result[0];
+        int needStart = result[1];
+        while(player.isOnline()){
+            try {
+                if (matchingManager.isStarted()){
+                    break;
+                }
+                Thread.sleep(1000);
+            } catch(Exception e) {
+                break;
+            }
+        }
+        if (!player.isOnline()){
+            return false;
+        }
+        if (needStart == 1){
+            MunhuntServer munhuntServer = new MunhuntServer(port);
+            munhuntServer.start();
+        }
+        BungeeCordMoveServer bungeeCordMoveServer = new BungeeCordMoveServer();
+        bungeeCordMoveServer.move(player, String.valueOf(port));
         return true;
     }
 }

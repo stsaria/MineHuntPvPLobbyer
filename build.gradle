@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'commons-io:commons-io:2.18.0'
     compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
 }
 

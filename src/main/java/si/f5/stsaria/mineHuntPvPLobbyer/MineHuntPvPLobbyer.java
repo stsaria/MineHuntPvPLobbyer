@@ -1,11 +1,6 @@
 package si.f5.stsaria.mineHuntPvPLobbyer;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.time.Period;
 
 public final class MineHuntPvPLobbyer extends JavaPlugin {
 
