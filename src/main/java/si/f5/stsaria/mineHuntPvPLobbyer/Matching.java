@@ -71,7 +71,13 @@ public class Matching {
     public void removeStandByPlayer(Player player){
         synchronized (lock) {
             for (int i = 0; i < standByPortsPlayers.size(); i++) {
-                standByPortsPlayers.get(i).remove(player);
+                if (standByPortsPlayers.get(i).contains(player)) {
+                    standByPortsPlayers.get(i).remove(player);
+                    if (standByPortsPlayers.get(i).isEmpty()) {
+                        standByPortsPlayers.remove(i);
+                        standByPorts.remove(i);
+                    }
+                }
             }
         }
     }
