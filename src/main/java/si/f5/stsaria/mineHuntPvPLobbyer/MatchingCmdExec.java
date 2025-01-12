@@ -36,6 +36,7 @@ public class MatchingCmdExec implements CommandExecutor {
                     int port = result[0];
                     int needStart = result[1];
                     if (port == 0) {
+                        Matching.removePlayingPlayerUUID(player.getUniqueId());
                         matching.removeStandByPlayer(player);
                         player.sendTitle("Failed Match", null);
                         return false;
@@ -46,6 +47,7 @@ public class MatchingCmdExec implements CommandExecutor {
                         }
                     }
                     if (!(player.isOnline() && matching.isStarted())) {
+                        Matching.removePlayingPlayerUUID(player.getUniqueId());
                         matching.removeStandByPlayer(player);
                         player.sendTitle("Failed Match", null);
                         return false;
