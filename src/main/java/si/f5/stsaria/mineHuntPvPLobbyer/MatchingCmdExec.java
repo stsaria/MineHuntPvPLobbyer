@@ -64,7 +64,7 @@ public class MatchingCmdExec implements CommandExecutor {
                             player.sendTitle(String.valueOf(serverMoveWaitSec-i-3), null);
                         }
                         player.playSound(player, Sound.ENTITY_IRON_GOLEM_STEP, 200f, 1f);
-                        BungeeCorder.moveServer(plugin, player, "munhunt-" + String.valueOf(port));
+                        BungeeCorder.moveServer(plugin, player, "manhunt-" + String.valueOf(port));
                     }
                 } catch (Exception e) {
                     this.logger.log(Level.SEVERE, e.toString());
