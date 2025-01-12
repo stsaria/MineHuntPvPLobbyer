@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class Matching {
     private final static String serversPath = System.getProperty("user.home")+"/manhuntServers/";
     private final static int[] ports = Matching.getPorts();
-    private final static int gamePlayerMax = 1;
+    private final static int gamePlayerMax = 4;
 
     private static ArrayList<Integer> startedPorts = new ArrayList<Integer>();
 
