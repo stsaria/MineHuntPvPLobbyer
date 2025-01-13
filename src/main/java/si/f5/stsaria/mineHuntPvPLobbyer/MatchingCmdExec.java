@@ -5,6 +5,8 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -14,12 +16,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MatchingCmdExec implements CommandExecutor {
-    private final static int serverMoveWaitSec = 60;
+    private final int serverMoveWaitSec;
     private final Plugin plugin;
     private final Logger logger;
-    public MatchingCmdExec(Plugin plugin, Logger logger){
+    private final Configuration config;
+
+    public MatchingCmdExec(Plugin plugin){
         this.plugin = plugin;
-        this.logger = logger;
+        this.logger = plugin.getLogger();
+        this.config = plugin.getConfig();
+        serverMoveWaitSec = config.getInt("serverMoveWaitSec");
     }
     public boolean onCommand(CommandSender s, Command c, String l, String[] a){
         Plugin plugin = this.plugin;
@@ -31,7 +37,7 @@ public class MatchingCmdExec implements CommandExecutor {
                         return false;
                     }
                     player.sendTitle("Matching now....", null);
-                    Matching matching = new Matching(player);
+                    Matching matching = new Matching(player, this.config);
                     int[] result = matching.ifVacantAdd();
                     int port = result[0];
                     int needStart = result[1];
@@ -53,7 +59,7 @@ public class MatchingCmdExec implements CommandExecutor {
                         return false;
                     }
                     if (needStart == 1) {
-                        ManhuntServer manhuntServer = new ManhuntServer(port, matching.standByPlayers, this.logger);
+                        ManhuntServer manhuntServer = new ManhuntServer(port, matching.standByPlayers, this.plugin);
                         manhuntServer.start();
                     }
                     if (matching.isStarted()){

@@ -1,46 +1,60 @@
 package si.f5.stsaria.mineHuntPvPLobbyer;
 
 import org.apache.commons.io.FileUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ManhuntServer extends Thread{
-    private final static String serversPath = System.getProperty("user.home")+"/manhuntServers/";
+    private final String workingDir;
     private final long serverTimeoutMinutes = 40;
 
     private final int port;
     private final ArrayList<Player> players;
     private final Logger logger;
+    private final Plugin plugin;
 
-    public ManhuntServer(int port, ArrayList<Player> players, Logger logger){
+    public ManhuntServer(int port, ArrayList<Player> players, Plugin plugin){
         this.port = port;
         this.players = players;
-        this.logger = logger;
+        this.plugin = plugin;
+        this.logger = plugin.getLogger();
+        this.workingDir = plugin.getDataFolder().getAbsolutePath()+"/"+String.valueOf(port);
+        Path workingDirPath = Paths.get(workingDir);
+        try{
+            if (workingDirPath.toFile().isDirectory()){
+                FileUtils.deleteDirectory(workingDirPath.toFile());
+            }
+            Files.createDirectory(workingDirPath);
+            Files.createDirectory(Paths.get(workingDir+"/plugins"));
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.toString());
+        }
     }
     public void run(){
         try {
-            for (String dirS : new ArrayList<String>(Arrays.asList("world", "world_nether"))){
-                File dir = new File(serversPath + String.valueOf(port) + "/"+dirS+"/");
-                if (dir.isDirectory()){
-                    FileUtils.deleteDirectory(dir);
-                }
-            }
-            FileWriter fw = new FileWriter(new File(serversPath + String.valueOf(port) + "/eula.txt"));
+            PaperDownloader.downloadLatestBuild(Bukkit.getVersion().split("-")[0], this.workingDir+"/server.jar");
+            httpGet.download(plugin.getConfig().getString("manhuntMainDownloadURL"), workingDir+"/plugins/manhunt.jar");
+
+            FileWriter fw = new FileWriter(new File(this.workingDir + "/eula.txt"));
             fw.write("eula=true");
             fw.close();
 
-            Paths.get("src/resources/").toFile();
+            InJarFileUtils.copyResourcesFileToLocalFile("server.properties", this.workingDir + "/server.properties");
+            InJarFileUtils.copyResourcesFileToLocalFile("spigot.yml", this.workingDir + "/spigot.yml");
 
-            InJarFileUtils.copyResourcesFileToLocalFile("server.properties", serversPath + String.valueOf(port) + "/server.properties");
-            InJarFileUtils.copyResourcesFileToLocalFile("spigot.yml", serversPath + String.valueOf(port) + "/spigot.yml");
-
-            Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "java -jar server.jar --port "+String.valueOf(port)+" --nogui"}, null, new File(serversPath + String.valueOf(port)));
+            Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "java -jar server.jar --port "+String.valueOf(port)+" --nogui"}, null, new File(this.workingDir));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
             for (Player player : this.players){
                 String userName = player.getName();
@@ -54,7 +68,7 @@ public class ManhuntServer extends Thread{
                 Matching.removePlayingPlayerUUID(player.getUniqueId());
             }
         } catch(Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.toString());
         }
     }
 }

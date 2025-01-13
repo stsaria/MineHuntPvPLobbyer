@@ -1,5 +1,6 @@
 package si.f5.stsaria.mineHuntPvPLobbyer;
 
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -12,9 +13,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 public class Matching {
-    private final static String serversPath = System.getProperty("user.home")+"/manhuntServers/";
-    private final static int[] ports = Matching.getPorts();
-    private final static int gamePlayerMax = 4;
+    private final int gamePlayerMax;
 
     private static ArrayList<Integer> startedPorts = new ArrayList<Integer>();
 
@@ -28,30 +27,14 @@ public class Matching {
     public ArrayList<Player> standByPlayers;
 
     private final Player player;
+    private final Configuration config;
+
     private int port = 0;
 
-    public Matching(Player player){
+    public Matching(Player player, Configuration config){
         this.player = player;
-    }
-    private static int[] getPorts(){
-        ArrayList<Integer> portsTemp = new ArrayList<Integer>();
-        try {
-            if (!Paths.get(serversPath).toFile().isDirectory()){
-                return new int[0];
-            }
-            Stream<Path> dirStream = Files.list(Paths.get(serversPath));
-            ArrayList<Path> dirList = new ArrayList<Path>();
-            dirStream.forEach(dirList::add);
-            for (Path dir : dirList){
-                if (!(new File(dir.toString()+"/server.jar").isFile() && new File(dir.toString()+"/plugins/manhunt.jar").isFile())){
-                    continue;
-                }
-                portsTemp.add(Integer.valueOf(dir.toString().split("/")[dir.toString().split("/").length-1]));
-            }
-            return portsTemp.stream().mapToInt(Integer::intValue).toArray();
-        } catch (Exception e) {
-            return new int[0];
-        }
+        this.config = config;
+        gamePlayerMax = config.getInt("gamePlayerMax");
     }
     public boolean isStarted(){
         synchronized (lock) {
@@ -102,7 +85,7 @@ public class Matching {
                     }
                 }
             }
-            for (int portL : ports) {
+            for (int portL : config.getIntegerList("ports")) {
                 if (!startedPorts.contains(portL) && !standByPorts.contains(portL)) {
                     standByPorts.add(portL);
                     this.port = portL;
