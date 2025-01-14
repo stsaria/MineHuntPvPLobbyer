@@ -23,13 +23,11 @@ public class ManhuntServer extends Thread{
     private final int port;
     private final ArrayList<Player> players;
     private final Logger logger;
-    private final Plugin plugin;
     private final Configuration config;
 
     public ManhuntServer(int port, ArrayList<Player> players, Plugin plugin){
         this.port = port;
         this.players = players;
-        this.plugin = plugin;
         this.logger = plugin.getLogger();
         this.config = plugin.getConfig();
         this.serverTimeoutMinutes = plugin.getConfig().getInt("mainServerTimeoutMinutes");
