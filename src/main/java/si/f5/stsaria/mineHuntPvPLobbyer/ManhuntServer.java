@@ -56,6 +56,10 @@ public class ManhuntServer extends Thread{
 
             Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "java -jar server.jar --port " + port +" --nogui"}, null, new File(this.workingDir));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+            for (String userName : this.plugin.getConfig().getStringList("mainServerOps")){
+                writer.write("op " + userName + "\n");
+                writer.flush();
+            }
             for (Player player : this.players){
                 String userName = player.getName();
                 writer.write("whitelist add " + userName + "\n");

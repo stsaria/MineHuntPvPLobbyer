@@ -36,7 +36,8 @@ public class MatchingCmdExec implements CommandExecutor {
                     if (!(s instanceof Player player)) {
                         return false;
                     }
-                    player.sendTitle("Matching now....", "", 0, 10, 0);
+                    player.playSound(player, Sound.MUSIC_DISC_CHIRP, 200f, 1f);
+                    player.sendTitle("Matching now....", "", 20, 60, 2);
                     Matching matching = new Matching(player, this.config);
                     int[] result = matching.ifVacantAdd();
                     int port = result[0];
@@ -44,7 +45,7 @@ public class MatchingCmdExec implements CommandExecutor {
                     if (port == 0) {
                         Matching.removePlayingPlayerUUID(player.getUniqueId());
                         matching.removeStandByPlayer(player);
-                        player.sendTitle("Failed Match", "", 0, 10, 0);
+                        player.sendTitle("Failed Match", "", 20, 60, 2);
                         return false;
                     }
                     while (player.isOnline()) {
@@ -55,7 +56,7 @@ public class MatchingCmdExec implements CommandExecutor {
                     if (!(player.isOnline() && matching.isStarted())) {
                         Matching.removePlayingPlayerUUID(player.getUniqueId());
                         matching.removeStandByPlayer(player);
-                        player.sendTitle("Failed Match", "", 0, 10, 0);
+                        player.sendTitle("Failed Match", "", 20, 60, 2);
                         return false;
                     }
                     if (needStart == 1) {
@@ -63,16 +64,18 @@ public class MatchingCmdExec implements CommandExecutor {
                         manhuntServer.start();
                     }
                     if (matching.isStarted()){
-                        player.sendTitle("Matched!", "Please wait for server to start...", 0, 10, 0);
+                        player.stopAllSounds();
+                        player.playSound(player, Sound.MUSIC_DISC_OTHERSIDE, 200f, 1f);
+                        player.sendTitle("Matched!", "Please wait for server to start...", 20, 60, 2);
                         Thread.sleep(2000);
 
-                        for (int i = 0; i < serverMoveWaitSec-2; i++){
+                        for (int i = 0; i < serverMoveWaitSec-2; i++) {
                             Thread.sleep(1000);
-                            player.playSound(player, Sound.ENTITY_ITEM_PICKUP, 200f, 1f);
-                            player.sendTitle(String.valueOf(serverMoveWaitSec-i-3), "", 0, 10, 0);
+                            player.sendTitle(String.valueOf(serverMoveWaitSec - i - 3), "", 20, 60, 20);
                         }
-                        player.playSound(player, Sound.ENTITY_IRON_GOLEM_STEP, 200f, 1f);
-                        BungeeCorder.moveServer(plugin, player, "manhunt-" + port);
+                        player.playSound(player, Sound.ENTITY_GENERIC_EXPLODE, 200f, 1f);
+                        Thread.sleep(500);
+                        BungeeCorder.moveServer(this.plugin, player, "manhunt-" + port);
                     }
                 } catch (Exception e) {
                     this.logger.log(Level.SEVERE, e.toString());

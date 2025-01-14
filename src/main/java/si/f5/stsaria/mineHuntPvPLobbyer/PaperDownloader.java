@@ -5,7 +5,6 @@ import java.util.Objects;
 public class PaperDownloader extends httpGet {
     private static String getDonwloadURL(String version){
         String versionInfo = contentString("http://api.papermc.io/v2/projects/paper/versions/" + version);
-        System.out.println(versionInfo);
         if (Objects.equals(versionInfo, "")){
             return "";
         }
