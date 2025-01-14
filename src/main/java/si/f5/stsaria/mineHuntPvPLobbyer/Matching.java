@@ -68,8 +68,9 @@ public class Matching {
                 if (standByPortsPlayers.get(i).size() <= gamePlayer) {
                     int port = standByPorts.get(i);
                     this.port = port;
-                    playingPlayerUUIDs.add(player.getUniqueId());
-                    if (standByPortsPlayers.get(i).size() + 1 >= gamePlayer) {
+                    standByPortsPlayers.get(i).add(this.player);
+                    playingPlayerUUIDs.add(this.player.getUniqueId());
+                    if (standByPortsPlayers.get(i).size() >= gamePlayer) {
                         startedPorts.add(port);
                         standByPorts.remove(i);
                         this.standByPlayers = standByPortsPlayers.get(i);
@@ -85,7 +86,7 @@ public class Matching {
                     standByPorts.add(portL);
                     this.port = portL;
                     standByPortsPlayers.add(new ArrayList<>(List.of(this.player)));
-                    playingPlayerUUIDs.add(player.getUniqueId());
+                    playingPlayerUUIDs.add(this.player.getUniqueId());
                     System.out.println(standByPortsPlayers.get(standByPorts.indexOf(portL)));
                     if (standByPortsPlayers.get(standByPorts.indexOf(portL)).size() >= gamePlayer) {
                         startedPorts.add(portL);
