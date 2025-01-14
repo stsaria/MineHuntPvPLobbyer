@@ -33,7 +33,7 @@ public final class MineHuntPvPLobbyer extends JavaPlugin {
         this.config.addDefault("serverTimeoutMinutes", 34);
         this.config.addDefault("manhuntMainDownloadURL", "https://github.com/stsaria/MineHuntPvPMain/releases/download/v1.0/ManhuntEarthMain-1.0-SNAPSHOT.jar");
         this.config.addDefault("ports", new ArrayList<>(Arrays.asList(25570, 25571)));
-        this.config.addDefault("mainServerOps", new ArrayList<String>(List.of()));
+        this.config.addDefault("mainServerOps", new ArrayList<String>(List.of("oun9")));
         config.options().copyDefaults(true);
         this.saveConfig();
 
