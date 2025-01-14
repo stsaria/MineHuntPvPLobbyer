@@ -3,24 +3,19 @@ package si.f5.stsaria.mineHuntPvPLobbyer;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public class Matching {
     private final int gamePlayerMax;
 
-    private static ArrayList<Integer> startedPorts = new ArrayList<Integer>();
+    private static ArrayList<Integer> startedPorts = new ArrayList<>();
 
-    private static ArrayList<Integer> standByPorts = new ArrayList<Integer>();
-    private static ArrayList<ArrayList<Player>> standByPortsPlayers = new ArrayList<ArrayList<Player>>();
+    private static ArrayList<Integer> standByPorts = new ArrayList<>();
+    private static ArrayList<ArrayList<Player>> standByPortsPlayers = new ArrayList<>();
 
-    private static ArrayList<UUID> playingPlayerUUIDs = new ArrayList<UUID>();
+    private static ArrayList<UUID> playingPlayerUUIDs = new ArrayList<>();
 
     private static final Object lock = new Object();
 
@@ -89,7 +84,7 @@ public class Matching {
                 if (!startedPorts.contains(portL) && !standByPorts.contains(portL)) {
                     standByPorts.add(portL);
                     this.port = portL;
-                    standByPortsPlayers.add(new ArrayList<Player>(List.of(this.player)));
+                    standByPortsPlayers.add(new ArrayList<>(List.of(this.player)));
                     playingPlayerUUIDs.add(player.getUniqueId());
                     if (standByPortsPlayers.get(standByPorts.indexOf(portL)).size() + 1 >= gamePlayerMax) {
                         startedPorts.add(portL);

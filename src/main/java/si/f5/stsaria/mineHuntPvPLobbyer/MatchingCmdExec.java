@@ -6,7 +6,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -15,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@SuppressWarnings("NullableProblems")
 public class MatchingCmdExec implements CommandExecutor {
     private final int serverMoveWaitSec;
     private final Plugin plugin;
@@ -29,14 +29,14 @@ public class MatchingCmdExec implements CommandExecutor {
     }
     public boolean onCommand(CommandSender s, Command c, String l, String[] a){
         Plugin plugin = this.plugin;
-        AtomicBoolean atmicResult = new AtomicBoolean(false);
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
         try {
             CompletableFuture.supplyAsync(() -> {
                 try {
                     if (!(s instanceof Player player)) {
                         return false;
                     }
-                    player.sendTitle("Matching now....", null);
+                    player.sendTitle("Matching now....", "", 0, 10, 0);
                     Matching matching = new Matching(player, this.config);
                     int[] result = matching.ifVacantAdd();
                     int port = result[0];
@@ -44,7 +44,7 @@ public class MatchingCmdExec implements CommandExecutor {
                     if (port == 0) {
                         Matching.removePlayingPlayerUUID(player.getUniqueId());
                         matching.removeStandByPlayer(player);
-                        player.sendTitle("Failed Match", null);
+                        player.sendTitle("Failed Match", "", 0, 10, 0);
                         return false;
                     }
                     while (player.isOnline()) {
@@ -55,7 +55,7 @@ public class MatchingCmdExec implements CommandExecutor {
                     if (!(player.isOnline() && matching.isStarted())) {
                         Matching.removePlayingPlayerUUID(player.getUniqueId());
                         matching.removeStandByPlayer(player);
-                        player.sendTitle("Failed Match", null);
+                        player.sendTitle("Failed Match", "", 0, 10, 0);
                         return false;
                     }
                     if (needStart == 1) {
@@ -63,30 +63,26 @@ public class MatchingCmdExec implements CommandExecutor {
                         manhuntServer.start();
                     }
                     if (matching.isStarted()){
-                        player.sendTitle("Matched!", "Please wait for server to start...");
+                        player.sendTitle("Matched!", "Please wait for server to start...", 0, 10, 0);
                         Thread.sleep(2000);
 
                         for (int i = 0; i < serverMoveWaitSec-2; i++){
                             Thread.sleep(1000);
                             player.playSound(player, Sound.ENTITY_ITEM_PICKUP, 200f, 1f);
-                            player.sendTitle(String.valueOf(serverMoveWaitSec-i-3), null);
+                            player.sendTitle(String.valueOf(serverMoveWaitSec-i-3), "", 0, 10, 0);
                         }
                         player.playSound(player, Sound.ENTITY_IRON_GOLEM_STEP, 200f, 1f);
-                        BungeeCorder.moveServer(plugin, player, "manhunt-" + String.valueOf(port));
+                        BungeeCorder.moveServer(plugin, player, "manhunt-" + port);
                     }
                 } catch (Exception e) {
                     this.logger.log(Level.SEVERE, e.toString());
                     return false;
                 }
                 return true;
-            }).thenAcceptAsync(result -> {
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    atmicResult.set(result);
-                });
-            });
+            }).thenAcceptAsync(result -> Bukkit.getScheduler().runTask(plugin, () -> atomicBoolean.set(result)));
         } catch (Exception e) {
             this.logger.log(Level.SEVERE, e.toString());
         }
-        return atmicResult.get();
+        return atomicBoolean.get();
     }
 }

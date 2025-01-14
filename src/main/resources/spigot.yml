@@ -18,9 +18,9 @@ commands:
   spam-exclusions:
     - /skill
 messages:
-  whitelist: "You are not whitelisted on this server!"
-  unknown-command: "Unknown command. Type \"help\" for help."
-  no-permission: "I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error."
+  whitelist: "dont try to break in."
+  unknown-command: "huh command."
+  no-permission: "you not have permission lol."
 world-settings:
   default:
     anti-xray:

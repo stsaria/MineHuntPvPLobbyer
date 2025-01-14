@@ -1,5 +1,5 @@
 name: MineHuntPvPLobbyer
-version: '1.0'
+version: '1.2'
 main: si.f5.stsaria.mineHuntPvPLobbyer.MineHuntPvPLobbyer
 api-version: '1.21'
 

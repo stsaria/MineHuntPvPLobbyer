@@ -1,18 +1,21 @@
 package si.f5.stsaria.mineHuntPvPLobbyer;
 
+import java.util.Objects;
+
 public class PaperDownloader extends httpGet {
     private static String getDonwloadURL(String version){
         String versionInfo = contentString("http://api.papermc.io/v2/projects/paper/versions/" + version);
         System.out.println(versionInfo);
-        if (versionInfo == ""){
+        if (Objects.equals(versionInfo, "")){
             return "";
         }
         char[] versionInfoCharArray = versionInfo.toCharArray();
 
         StringBuilder buildNumberStringBuilder = new StringBuilder();
         boolean isDiscoveredDigit = false;
+        int reversedI;
         for (int i = 0; i < versionInfoCharArray.length; i++){
-            int reversedI = versionInfoCharArray.length-1-i;
+            reversedI = versionInfoCharArray.length-1-i;
             boolean isDigit = versionInfoCharArray[reversedI] >= '0' && versionInfoCharArray[reversedI] <= '9';
             if (isDigit){
                 if (!isDiscoveredDigit){
@@ -24,9 +27,9 @@ public class PaperDownloader extends httpGet {
             }
         }
         buildNumberStringBuilder.reverse();
-        return "https://api.papermc.io/v2/projects/paper/versions/"+version+"/builds/"+buildNumberStringBuilder.toString()+"/downloads/paper-"+version+"-"+buildNumberStringBuilder.toString()+".jar";
+        return "https://api.papermc.io/v2/projects/paper/versions/"+version+"/builds/"+ buildNumberStringBuilder+"/downloads/paper-"+version+"-"+buildNumberStringBuilder+".jar";
     }
-    public static boolean downloadLatestBuild(String version, String saveFileString){
-        return download(getDonwloadURL(version), saveFileString);
+    public static void downloadLatestBuild(String version, String saveFileString){
+        download(getDonwloadURL(version), saveFileString);
     }
 }
