@@ -28,19 +28,17 @@ public final class MineHuntPvPLobbyer extends JavaPlugin {
             logger.log(Level.SEVERE, e.toString());
         }
 
-        this.config.addDefault("gamePlayerMax", 4);
-        this.config.addDefault("serverMoveWaitSec", 60);
-        this.config.addDefault("serverTimeoutMinutes", 34);
+        this.config.addDefault("lobbyToMainServerMoveWaitSec", 60);
+        this.config.addDefault("mainServerTimeoutMinutes", 34);
+        this.config.addDefault("mainServerPlayer", 4);
+        this.config.addDefault("mainServerXmxGB", 1);
+        this.config.addDefault("mainServerXmsGB", 1);
+        this.config.addDefault("mainServerPorts", new ArrayList<>(Arrays.asList(25570, 25571)));
+        this.config.addDefault("mainServerOps", new ArrayList<String>(List.of("plssetyourname")));
+        this.config.addDefault("mainServerJavaPath", "/usr/bin/java");
         this.config.addDefault("manhuntMainDownloadURL", "https://github.com/stsaria/MineHuntPvPMain/releases/download/v1.0/ManhuntEarthMain-1.0-SNAPSHOT.jar");
-        this.config.addDefault("ports", new ArrayList<>(Arrays.asList(25570, 25571)));
-        this.config.addDefault("mainServerOps", new ArrayList<String>(List.of("oun9")));
         config.options().copyDefaults(true);
         this.saveConfig();
-
-        if (this.config.getInt("gamePlayerMax") > 6){
-            this.logger.log(Level.WARNING, "The maximum value for gamePlayer is 6, but you set it to "+this.config.getInt("gamePlayerMax") +". Therefore, it has been automatically adjusted to 8.");
-            this.config.set("gamePlayerMax", 6);
-        }
 
         Objects.requireNonNull(getCommand("matching")).setExecutor(new MatchingCmdExec(this));
     }

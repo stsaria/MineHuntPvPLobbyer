@@ -25,7 +25,7 @@ public class MatchingCmdExec implements CommandExecutor {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
         this.config = plugin.getConfig();
-        serverMoveWaitSec = config.getInt("serverMoveWaitSec");
+        serverMoveWaitSec = config.getInt("lobbyToMainServerMoveWaitSec");
     }
     public boolean onCommand(CommandSender s, Command c, String l, String[] a){
         Plugin plugin = this.plugin;
@@ -53,6 +53,7 @@ public class MatchingCmdExec implements CommandExecutor {
                             break;
                         }
                     }
+                    player.stopAllSounds();
                     if (!(player.isOnline() && matching.isStarted())) {
                         Matching.removePlayingPlayerUUID(player.getUniqueId());
                         matching.removeStandByPlayer(player);
@@ -64,7 +65,6 @@ public class MatchingCmdExec implements CommandExecutor {
                         manhuntServer.start();
                     }
                     if (matching.isStarted()){
-                        player.stopAllSounds();
                         player.playSound(player, Sound.MUSIC_DISC_OTHERSIDE, 200f, 1f);
                         player.sendTitle("Matched!", "Please wait for server to start...", 20, 60, 2);
                         Thread.sleep(2000);
@@ -74,7 +74,8 @@ public class MatchingCmdExec implements CommandExecutor {
                             player.sendTitle(String.valueOf(serverMoveWaitSec - i - 3), "", 20, 60, 20);
                         }
                         player.playSound(player, Sound.ENTITY_GENERIC_EXPLODE, 200f, 1f);
-                        Thread.sleep(500);
+                        player.sendTitle("Server Started!", "Have fun!!", 20, 60, 2);
+                        Thread.sleep(2500);
                         BungeeCorder.moveServer(this.plugin, player, "manhunt-" + port);
                     }
                 } catch (Exception e) {

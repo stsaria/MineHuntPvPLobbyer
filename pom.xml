@@ -6,7 +6,7 @@
 
     <groupId>si.f5.stsaria</groupId>
     <artifactId>MineHuntPvPLobbyer</artifactId>
-    <version>1.2</version>
+    <version>1.21</version>
     <packaging>jar</packaging>
 
     <name>MineHuntPvPLobbyer</name>

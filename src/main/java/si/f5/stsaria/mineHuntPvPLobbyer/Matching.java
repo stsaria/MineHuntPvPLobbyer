@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Matching {
-    private final int gamePlayerMax;
+    private final int gamePlayer;
 
     private static ArrayList<Integer> startedPorts = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class Matching {
     public Matching(Player player, Configuration config){
         this.player = player;
         this.config = config;
-        gamePlayerMax = config.getInt("gamePlayerMax");
+        gamePlayer = config.getInt("mainServerPlayer");
     }
     public boolean isStarted(){
         synchronized (lock) {
@@ -65,11 +65,11 @@ public class Matching {
                 return new int[]{0, 0};
             }
             for (int i = 0; i < standByPorts.size(); i++) {
-                if (standByPortsPlayers.get(i).size() <= gamePlayerMax) {
+                if (standByPortsPlayers.get(i).size() <= gamePlayer) {
                     int port = standByPorts.get(i);
                     this.port = port;
                     playingPlayerUUIDs.add(player.getUniqueId());
-                    if (standByPortsPlayers.get(i).size() + 1 >= gamePlayerMax) {
+                    if (standByPortsPlayers.get(i).size() + 1 >= gamePlayer) {
                         startedPorts.add(port);
                         standByPorts.remove(i);
                         this.standByPlayers = standByPortsPlayers.get(i);
@@ -80,13 +80,13 @@ public class Matching {
                     }
                 }
             }
-            for (int portL : config.getIntegerList("ports")) {
+            for (int portL : config.getIntegerList("mainServerPorts")) {
                 if (!startedPorts.contains(portL) && !standByPorts.contains(portL)) {
                     standByPorts.add(portL);
                     this.port = portL;
                     standByPortsPlayers.add(new ArrayList<>(List.of(this.player)));
                     playingPlayerUUIDs.add(player.getUniqueId());
-                    if (standByPortsPlayers.get(standByPorts.indexOf(portL)).size() + 1 >= gamePlayerMax) {
+                    if (standByPortsPlayers.get(standByPorts.indexOf(portL)).size() + 1 >= gamePlayer) {
                         startedPorts.add(portL);
                         this.standByPlayers = standByPortsPlayers.get(standByPorts.indexOf(portL));
                         standByPortsPlayers.remove(standByPorts.indexOf(portL));
