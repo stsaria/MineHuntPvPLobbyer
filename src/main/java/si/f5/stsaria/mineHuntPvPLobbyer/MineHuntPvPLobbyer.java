@@ -36,7 +36,7 @@ public final class MineHuntPvPLobbyer extends JavaPlugin {
         this.config.addDefault("mainServerPorts", new ArrayList<>(Arrays.asList(25570, 25571)));
         this.config.addDefault("mainServerOps", new ArrayList<>(List.of("plssetyourname")));
         this.config.addDefault("mainServerJavaPath", "/usr/bin/java");
-        this.config.addDefault("manhuntMainDownloadURL", "https://github.com/stsaria/MineHuntPvPMain/releases/download/v1.1/ManhuntEarthMain-1.1.jar");
+        this.config.addDefault("manhuntMainDownloadURL", "https://github.com/stsaria/MineHuntPvPMain/releases/download/v1.1/ManhuntEarthMain-1.2.jar");
         config.options().copyDefaults(true);
         this.saveConfig();
 
