@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'si.f5.stsaria'
-version = '1.31'
+version = '1.32'
 
 repositories {
     mavenCentral()
