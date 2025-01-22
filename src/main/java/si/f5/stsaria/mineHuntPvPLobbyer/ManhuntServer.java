@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,8 +47,11 @@ public class ManhuntServer extends Thread{
     public void run(){
         try {
             PaperDownloader.downloadLatestBuild(Bukkit.getVersion().split("-")[0], this.workingDir + "/server.jar");
-            httpGet.download(this.config.getString("manhuntMainDownloadURL"), workingDir + "/plugins/manhunt.jar");
-
+            httpGet.download(this.config.getString("mainServerManhuntDownloadURL"), workingDir + "/plugins/manhunt.jar");
+            if (this.config.getBoolean("useGeyser")) {
+                httpGet.download(this.config.getString("mainServerGeyserDownloadURL"), workingDir + "/plugins/geyser.jar");
+                httpGet.download(this.config.getString("mainServerFloodGateDownloadURL"), workingDir + "/plugins/floodgate.jar");
+            }
             FileWriter fw = new FileWriter(this.workingDir + "/eula.txt");
             fw.write("eula=true");
             fw.close();
@@ -63,7 +67,11 @@ public class ManhuntServer extends Thread{
             }
             for (Player player : this.players){
                 String userName = player.getName();
-                writer.write("whitelist add " + userName + "\n");
+                if (this.config.getBoolean("useGeyser") && userName.substring(0, Objects.requireNonNull(this.config.getString("geyserPrefix")).length()).equals(this.config.getString("geyserPrefix"))){
+                    writer.write("fwhitelist add " + userName.replaceFirst(Objects.requireNonNull(this.config.getString("geyserPrefix")), "") + "\n");
+                } else {
+                    writer.write("whitelist add " + userName + "\n");
+                }
                 writer.flush();
             }
             process.waitFor(serverTimeoutMinutes, TimeUnit.MINUTES);

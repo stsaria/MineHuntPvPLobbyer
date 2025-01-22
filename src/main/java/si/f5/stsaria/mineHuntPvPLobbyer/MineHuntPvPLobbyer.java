@@ -28,7 +28,10 @@ public final class MineHuntPvPLobbyer extends JavaPlugin {
             logger.log(Level.SEVERE, e.toString());
         }
 
+
         this.config.addDefault("lobbyToMainServerMoveWaitSec", 60);
+        this.config.addDefault("useGeyser", true);
+        this.config.addDefault("geyserPrefix", ".");
         this.config.addDefault("mainServerTimeoutMinutes", 34);
         this.config.addDefault("mainServerPlayer", 4);
         this.config.addDefault("mainServerXmxGB", 1);
@@ -36,7 +39,10 @@ public final class MineHuntPvPLobbyer extends JavaPlugin {
         this.config.addDefault("mainServerPorts", new ArrayList<>(Arrays.asList(25570, 25571)));
         this.config.addDefault("mainServerOps", new ArrayList<>(List.of("plssetyourname")));
         this.config.addDefault("mainServerJavaPath", "/usr/bin/java");
-        this.config.addDefault("manhuntMainDownloadURL", "https://github.com/stsaria/MineHuntPvPMain/releases/download/v1.31/ManhuntEarthMain-1.31.jar");
+        this.config.addDefault("mainServerManhuntDownloadURL", "https://github.com/stsaria/MineHuntPvPMain/releases/download/v1.31/ManhuntEarthMain-1.31.jar");
+        this.config.addDefault("mainServerGeyserDownloadURL", "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot");
+        this.config.addDefault("mainServerFloodGateDownloadURL", "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot");
+
         config.options().copyDefaults(true);
         this.saveConfig();
 
