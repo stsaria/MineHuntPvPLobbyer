@@ -7,11 +7,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class BungeeCorder {
-    public static void moveServer(Plugin plugin, Player player, String destination){
+    public static void moveServer(Plugin plugin, Player player, String destination) throws InterruptedException {
         Bukkit.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("Connect");
-        out.writeUTF(destination);
-        player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+        ByteArrayDataOutput out;
+        while (player.isOnline()) {
+            out = ByteStreams.newDataOutput();
+            out.writeUTF("Connect");
+            out.writeUTF(destination);
+            player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+            Thread.sleep(2000);
+        }
     }
 }
