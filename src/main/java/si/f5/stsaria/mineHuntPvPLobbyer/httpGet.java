@@ -18,14 +18,20 @@ public class httpGet {
             connection.setReadTimeout(5000);
             int responseCode = connection.getResponseCode();
             String newUrl;
+            URI tempUrl;
             while (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
                 newUrl = connection.getHeaderField("Location");
-                connection = (HttpURLConnection) URI.create(newUrl).toURL().openConnection();
+                tempUrl = URI.create(newUrl);
+                if (!tempUrl.isAbsolute()){
+                    tempUrl = URI.create(url).resolve(newUrl);
+                }
+                connection = (HttpURLConnection) tempUrl.toURL().openConnection();
                 connection.setInstanceFollowRedirects(false);
                 responseCode = connection.getResponseCode();
             }
             return connection.getInputStream();
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

@@ -1,5 +1,5 @@
 name: MineHuntPvPLobbyer
-version: '1.32'
+version: '1.4'
 main: si.f5.stsaria.mineHuntPvPLobbyer.MineHuntPvPLobbyer
 # minecraft api version!!!!
 api-version: '1.21'

@@ -30,7 +30,7 @@ public final class MineHuntPvPLobbyer extends JavaPlugin {
 
 
         this.config.addDefault("lobbyToMainServerMoveWaitSec", 60);
-        this.config.addDefault("useGeyser", true);
+        this.config.addDefault("useGeyser", "true");
         this.config.addDefault("geyserPrefix", ".");
         this.config.addDefault("mainServerTimeoutMinutes", 34);
         this.config.addDefault("mainServerPlayer", 4);

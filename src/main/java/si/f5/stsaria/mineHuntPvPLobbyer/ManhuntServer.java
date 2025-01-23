@@ -48,7 +48,8 @@ public class ManhuntServer extends Thread{
         try {
             PaperDownloader.downloadLatestBuild(Bukkit.getVersion().split("-")[0], this.workingDir + "/server.jar");
             httpGet.download(this.config.getString("mainServerManhuntDownloadURL"), workingDir + "/plugins/manhunt.jar");
-            if (this.config.getBoolean("useGeyser")) {
+            if (Objects.requireNonNull(this.config.getString("useGeyser")).trim().equalsIgnoreCase("true")) {
+                System.out.println(this.config.getString("mainServerGeyserDownloadURL"));
                 httpGet.download(this.config.getString("mainServerGeyserDownloadURL"), workingDir + "/plugins/geyser.jar");
                 httpGet.download(this.config.getString("mainServerFloodGateDownloadURL"), workingDir + "/plugins/floodgate.jar");
             }
@@ -67,7 +68,7 @@ public class ManhuntServer extends Thread{
             }
             for (Player player : this.players){
                 String userName = player.getName();
-                if (this.config.getBoolean("useGeyser") && userName.substring(0, Objects.requireNonNull(this.config.getString("geyserPrefix")).length()).equals(this.config.getString("geyserPrefix"))){
+                if (Objects.requireNonNull(this.config.getString("useGeyser")).trim().equalsIgnoreCase("true") && userName.startsWith(Objects.requireNonNull(this.config.getString("geyserPrefix")))){
                     writer.write("fwhitelist add " + userName.replaceFirst(Objects.requireNonNull(this.config.getString("geyserPrefix")), "") + "\n");
                 } else {
                     writer.write("whitelist add " + userName + "\n");
