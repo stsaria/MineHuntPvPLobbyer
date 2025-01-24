@@ -39,7 +39,7 @@ public final class MineHuntPvPLobbyer extends JavaPlugin {
         this.config.addDefault("mainServerPorts", new ArrayList<>(Arrays.asList(25570, 25571)));
         this.config.addDefault("mainServerOps", new ArrayList<>(List.of("plssetyourname")));
         this.config.addDefault("mainServerJavaPath", "/usr/bin/java");
-        this.config.addDefault("mainServerManhuntDownloadURL", "https://github.com/stsaria/MineHuntPvPMain/releases/download/v1.31/ManhuntEarthMain-1.31.jar");
+        this.config.addDefault("mainServerManhuntDownloadURL", "http://stsaria.f5.si/mySoftWares/getMineHuntPvPMainLatestAsset");
         this.config.addDefault("mainServerGeyserDownloadURL", "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot");
         this.config.addDefault("mainServerFloodGateDownloadURL", "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot");
 
