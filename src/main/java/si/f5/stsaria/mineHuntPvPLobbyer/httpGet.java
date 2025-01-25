@@ -31,7 +31,6 @@ public class httpGet {
             }
             return connection.getInputStream();
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

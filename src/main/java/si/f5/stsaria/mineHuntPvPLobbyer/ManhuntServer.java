@@ -49,7 +49,6 @@ public class ManhuntServer extends Thread{
             PaperDownloader.downloadLatestBuild(Bukkit.getVersion().split("-")[0], this.workingDir + "/server.jar");
             httpGet.download(this.config.getString("mainServerManhuntDownloadURL"), workingDir + "/plugins/manhunt.jar");
             if (Objects.requireNonNull(this.config.getString("useGeyser")).trim().equalsIgnoreCase("true")) {
-                System.out.println(this.config.getString("mainServerGeyserDownloadURL"));
                 httpGet.download(this.config.getString("mainServerGeyserDownloadURL"), workingDir + "/plugins/geyser.jar");
                 httpGet.download(this.config.getString("mainServerFloodGateDownloadURL"), workingDir + "/plugins/floodgate.jar");
             }
